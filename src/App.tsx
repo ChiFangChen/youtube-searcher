@@ -5,6 +5,9 @@ import { Endpoints } from '@octokit/types';
 import styled, { css } from 'styled-components';
 import MaterialTextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
+import Zoom from '@material-ui/core/Zoom';
+import NavigationIcon from '@material-ui/icons/Navigation';
 
 type ReposResponse = Endpoints['GET /search/repositories']['response']['data']['items'];
 
@@ -88,6 +91,12 @@ const RepoList = styled.div`
   }
 `;
 
+const FabWrapper = styled.div`
+  position: fixed;
+  bottom: 40px;
+  right: 25px;
+`;
+
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const isLoadingRef = useRef(isLoading);
@@ -108,6 +117,8 @@ function App() {
   const [page, setPage] = useState(1);
   const pageRef = useRef(page);
   pageRef.current = page;
+
+  const [showTopBtn, setShowTopBtn] = useState(false);
 
   const repoListRef = useRef<HTMLDivElement>(null);
 
@@ -143,16 +154,29 @@ function App() {
 
   const debounceFetch = useCallback(debounce(fetch, 500), []);
 
+  const onTopBottomClick = (): void =>
+    repoListRef.current?.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+
   const onListScroll = () => {
+    if (!repoListRef.current) return;
+
+    // clientHeight + scrollTop = scrollHeight
+    const { clientHeight, scrollTop, scrollHeight } = repoListRef.current;
+
     if (
       !isLoadingRef.current &&
       repoCountRef.current > per_page * (pageRef.current - 1) &&
-      repoListRef.current
+      scrollTop + clientHeight + 1 >= scrollHeight
     ) {
-      // clientHeight + scrollTop = scrollHeight
-      const { clientHeight, scrollTop, scrollHeight } = repoListRef.current;
-      if (scrollTop + clientHeight + 1 >= scrollHeight) fetch();
+      fetch();
     }
+
+    if (scrollTop > 100) setShowTopBtn(true);
+    else setShowTopBtn(false);
   };
 
   useEffect(() => {
@@ -173,17 +197,27 @@ function App() {
           className="input"
         />
       </SearchBlock>
+
       <RepoList ref={repoListRef}>
         {repos.map((repo, i) => (
           <a key={`${repo.id}${i}`} href={repo.svn_url} target="_blank" rel="noreferrer">
             {repo.full_name}
           </a>
         ))}
+
         {isLoading && (
           <CircularProgressWrapper>
             <CircularProgress disableShrink className="circular" />
           </CircularProgressWrapper>
         )}
+
+        <Zoom in={showTopBtn} unmountOnExit>
+          <FabWrapper>
+            <Fab size="small" color="secondary" onClick={onTopBottomClick}>
+              <NavigationIcon />
+            </Fab>
+          </FabWrapper>
+        </Zoom>
       </RepoList>
     </AppWrapper>
   );
