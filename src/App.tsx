@@ -9,6 +9,8 @@ import Fab from '@material-ui/core/Fab';
 import Zoom from '@material-ui/core/Zoom';
 import NavigationIcon from '@material-ui/icons/Navigation';
 
+import { MOBILE_MAX } from 'variables';
+
 type ReposResponse = Endpoints['GET /search/repositories']['response']['data']['items'];
 
 type Fetch = () => void;
@@ -75,6 +77,7 @@ const RepoList = styled.div`
     background-color: whitesmoke;
     text-decoration: none;
     border: 1px solid #fff;
+    padding: 25px;
 
     &:visited {
       color: #999;
@@ -87,6 +90,10 @@ const RepoList = styled.div`
       &:visited {
         background-color: #d2aed2;
       }
+    }
+
+    @media (max-width: ${MOBILE_MAX}) {
+      justify-content: left;
     }
   }
 `;
