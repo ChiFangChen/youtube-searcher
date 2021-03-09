@@ -17,7 +17,7 @@ import MenuList from '@material-ui/core/MenuList';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { useTranslation } from 'react-i18next';
 
-import { MOBILE_MAX } from 'variables';
+import { MOBILE_MAX } from 'utils/variables';
 import { FlexCenter } from 'utils/styles';
 import Spinner from 'components/Spinner';
 
