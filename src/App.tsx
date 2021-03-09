@@ -2,12 +2,91 @@ import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 're
 import axios from 'axios';
 import { debounce } from 'ts-debounce';
 import { Endpoints } from '@octokit/types';
+import styled, { css } from 'styled-components';
+import MaterialTextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 type ReposResponse = Endpoints['GET /search/repositories']['response']['data']['items'];
 
 type Fetch = () => void;
 
 const per_page = 100;
+
+const FlexCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const AppWrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 25px;
+`;
+
+const SearchBlock = styled.div`
+  margin: 0 25px 25px;
+
+  > div {
+    width: 100%;
+  }
+`;
+
+const TextField = styled(MaterialTextField)`
+  &.input {
+    .Mui-focused {
+      &.MuiFormLabel-root {
+        color: #914191;
+      }
+      &.MuiInput-underline:after,
+      &.MuiInput-underline:before {
+        border-bottom-color: #914191;
+      }
+    }
+    .MuiInput-underline:hover:not(.Mui-disabled):before,
+    .MuiInput-underline:hover:after {
+      border-bottom: 2px solid #914191;
+    }
+  }
+`;
+
+const CircularProgressWrapper = styled.div`
+  ${FlexCenter}
+
+  .circular {
+    margin: 20px 0;
+    color: thistle;
+  }
+`;
+
+const RepoList = styled.div`
+  flex: 1;
+  overflow: scroll;
+
+  > a {
+    ${FlexCenter}
+    height: 40px;
+    width: 100%;
+    color: #000;
+    background-color: whitesmoke;
+    text-decoration: none;
+    border: 1px solid #fff;
+
+    &:visited {
+      color: #999;
+    }
+
+    &:hover {
+      color: #fff;
+      background-color: thistle;
+
+      &:visited {
+        background-color: #d2aed2;
+      }
+    }
+  }
+`;
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -85,26 +164,28 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <div>
-        <input value={search} onChange={handleSearchChange} />
-      </div>
-      <div
-        ref={repoListRef}
-        style={{
-          height: '200px',
-          overflow: 'scroll',
-        }}
-      >
+    <AppWrapper>
+      <SearchBlock>
+        <TextField
+          label="Git Repository"
+          value={search}
+          onChange={handleSearchChange}
+          className="input"
+        />
+      </SearchBlock>
+      <RepoList ref={repoListRef}>
         {repos.map((repo, i) => (
-          <div key={`${repo.id}${i}`}>
-            <a href={repo.svn_url} target="_blank" rel="noreferrer">
-              {repo.full_name}
-            </a>
-          </div>
+          <a key={`${repo.id}${i}`} href={repo.svn_url} target="_blank" rel="noreferrer">
+            {repo.full_name}
+          </a>
         ))}
-      </div>
-    </div>
+        {isLoading && (
+          <CircularProgressWrapper>
+            <CircularProgress disableShrink className="circular" />
+          </CircularProgressWrapper>
+        )}
+      </RepoList>
+    </AppWrapper>
   );
 }
 
