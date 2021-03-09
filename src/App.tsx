@@ -7,7 +7,16 @@ import MaterialTextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
 import Zoom from '@material-ui/core/Zoom';
+import IconButton from '@material-ui/core/IconButton';
+import LanguageIcon from '@material-ui/icons/Language';
 import NavigationIcon from '@material-ui/icons/Navigation';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { useTranslation } from 'react-i18next';
 
 import { MOBILE_MAX } from 'variables';
 
@@ -21,6 +30,13 @@ const FlexCenter = css`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const LangBtnWrapper = styled.div`
+  z-index: 999;
+  position: fixed;
+  right: 5px;
+  top: 5px;
 `;
 
 const AppWrapper = styled.div`
@@ -105,6 +121,8 @@ const FabWrapper = styled.div`
 `;
 
 function App() {
+  const { t, i18n } = useTranslation();
+
   const [isLoading, setIsLoading] = useState(false);
   const isLoadingRef = useRef(isLoading);
   isLoadingRef.current = isLoading;
@@ -126,8 +144,10 @@ function App() {
   pageRef.current = page;
 
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const [showLangNav, setShowLangNav] = useState(false);
 
   const repoListRef = useRef<HTMLDivElement>(null);
+  const langBtnRef = React.useRef(null);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -186,6 +206,14 @@ function App() {
     else setShowTopBtn(false);
   };
 
+  const openLangNav = () => setShowLangNav(true);
+  const closeLangNav = () => setShowLangNav(false);
+
+  const switchLang = (lang: 'en' | 'zh-tw') => () => {
+    i18n.changeLanguage(lang);
+    closeLangNav();
+  };
+
   useEffect(() => {
     const repoList = repoListRef.current;
     if (repoList) repoList.addEventListener('scroll', onListScroll);
@@ -196,9 +224,43 @@ function App() {
 
   return (
     <AppWrapper>
+      <LangBtnWrapper>
+        <IconButton ref={langBtnRef} onClick={openLangNav}>
+          <LanguageIcon fontSize="small" />
+        </IconButton>
+
+        <Popper
+          open={showLangNav}
+          anchorEl={langBtnRef.current}
+          role={undefined}
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={closeLangNav}>
+                  <MenuList>
+                    <MenuItem onClick={switchLang('en')} selected={i18n.language === 'en'}>
+                      English
+                    </MenuItem>
+                    <MenuItem onClick={switchLang('zh-tw')} selected={i18n.language === 'zh-tw'}>
+                      繁體中文
+                    </MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      </LangBtnWrapper>
+
       <SearchBlock>
         <TextField
-          label="Git Repository"
+          label={t('gitRepo')}
           value={search}
           onChange={handleSearchChange}
           className="input"
