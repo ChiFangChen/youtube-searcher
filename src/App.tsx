@@ -2,9 +2,8 @@ import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 're
 import axios from 'axios';
 import { debounce } from 'ts-debounce';
 import { Endpoints } from '@octokit/types';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import MaterialTextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
 import Zoom from '@material-ui/core/Zoom';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,18 +18,14 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { useTranslation } from 'react-i18next';
 
 import { MOBILE_MAX } from 'variables';
+import { FlexCenter } from 'utils/styles';
+import Spinner from 'components/Spinner';
 
 type ReposResponse = Endpoints['GET /search/repositories']['response']['data']['items'];
 
 type Fetch = () => void;
 
 const per_page = 100;
-
-const FlexCenter = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const LangBtnWrapper = styled.div`
   z-index: 999;
@@ -69,15 +64,6 @@ const TextField = styled(MaterialTextField)`
     .MuiInput-underline:hover:after {
       border-bottom: 2px solid #914191;
     }
-  }
-`;
-
-const CircularProgressWrapper = styled.div`
-  ${FlexCenter}
-
-  .circular {
-    margin: 20px 0;
-    color: thistle;
   }
 `;
 
@@ -274,11 +260,7 @@ function App() {
           </a>
         ))}
 
-        {isLoading && (
-          <CircularProgressWrapper>
-            <CircularProgress disableShrink className="circular" />
-          </CircularProgressWrapper>
-        )}
+        <Spinner isLoading={isLoading} />
 
         <Zoom in={showTopBtn} unmountOnExit>
           <FabWrapper>

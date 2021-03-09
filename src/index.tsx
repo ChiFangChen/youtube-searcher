@@ -2,14 +2,15 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import 'fontsource-roboto';
 import 'normalize.css';
-import './i18n.ts';
 
+import './i18n.ts';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Spinner from 'components/Spinner';
 
 ReactDOM.render(
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<Spinner wrapperHeight="100vh" />}>
     <App />
   </Suspense>,
   document.getElementById('root'),
