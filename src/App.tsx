@@ -52,33 +52,33 @@ const TextField = styled(MaterialTextField)`
 const RepoList = styled.div`
   flex: 1;
   overflow: scroll;
+`;
 
-  > a {
-    ${FlexCenter}
-    height: 40px;
-    width: 100%;
-    color: #000;
-    background-color: whitesmoke;
-    text-decoration: none;
-    border: 1px solid #fff;
-    padding: 25px;
+const RepoListItem = styled.a`
+  ${FlexCenter}
+  height: 40px;
+  width: 100%;
+  color: #000;
+  background-color: whitesmoke;
+  text-decoration: none;
+  border: 1px solid #fff;
+  padding: 25px;
+
+  &:visited {
+    color: #999;
+  }
+
+  &:hover {
+    color: #fff;
+    background-color: thistle;
 
     &:visited {
-      color: #999;
+      background-color: #d2aed2;
     }
+  }
 
-    &:hover {
-      color: #fff;
-      background-color: thistle;
-
-      &:visited {
-        background-color: #d2aed2;
-      }
-    }
-
-    @media (max-width: ${MOBILE_MAX}) {
-      justify-content: left;
-    }
+  @media (max-width: ${MOBILE_MAX}) {
+    justify-content: left;
   }
 `;
 
@@ -189,9 +189,9 @@ function App() {
 
       <RepoList ref={repoListRef}>
         {repos.map((repo, i) => (
-          <a key={`${repo.id}${i}`} href={repo.svn_url} target="_blank" rel="noreferrer">
+          <RepoListItem key={`${repo.id}${i}`} href={repo.svn_url} target="_blank" rel="noreferrer">
             {repo.full_name}
-          </a>
+          </RepoListItem>
         ))}
 
         <Spinner isLoading={isLoading} />
