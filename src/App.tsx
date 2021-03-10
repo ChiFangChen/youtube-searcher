@@ -1,23 +1,18 @@
 import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { debounce } from 'ts-debounce';
-import { Endpoints } from '@octokit/types';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import MaterialTextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import Zoom from '@material-ui/core/Zoom';
-import NavigationIcon from '@material-ui/icons/Navigation';
+import { Endpoints } from '@octokit/types';
+import { TextField as MaterialTextField, Typography } from '@material-ui/core';
 
 import { MOBILE_MAX } from 'utils/variables';
 import { FlexCenter } from 'utils/styles';
 import LanguageSwitcher from 'components/LanguageSwitcher';
 import Spinner from 'components/Spinner';
+import TopButton from 'components/TopButton';
 
 type ReposResponse = Endpoints['GET /search/repositories']['response']['data']['items'];
-
-type Fetch = () => void;
 
 const per_page = 100;
 
@@ -87,18 +82,10 @@ const RepoList = styled.div`
   }
 `;
 
-const FabWrapper = styled.div`
-  position: fixed;
-  bottom: 40px;
-  right: 25px;
-`;
-
 function App() {
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(false);
-  const isLoadingRef = useRef(isLoading);
-  isLoadingRef.current = isLoading;
 
   const [search, setSearch] = useState('');
   const searchRef = useRef(search);
@@ -109,8 +96,6 @@ function App() {
   reposRef.current = repos;
 
   const [repoCount, setRepoCount] = useState(repos.length);
-  const repoCountRef = useRef(repoCount);
-  repoCountRef.current = repoCount;
 
   const [page, setPage] = useState(1);
   const pageRef = useRef(page);
@@ -127,7 +112,7 @@ function App() {
     debounceFetch();
   };
 
-  const fetch: Fetch = () => {
+  const fetch: VoidFunction = () => {
     setIsLoading(true);
     const currentPage = pageRef.current;
     const queryString = `q=${encodeURIComponent(
@@ -159,15 +144,15 @@ function App() {
       behavior: 'smooth',
     });
 
-  const onListScroll = () => {
+  const onListScroll = useCallback(() => {
     if (!repoListRef.current) return;
 
     // clientHeight + scrollTop = scrollHeight
     const { clientHeight, scrollTop, scrollHeight } = repoListRef.current;
 
     if (
-      !isLoadingRef.current &&
-      repoCountRef.current > per_page * (pageRef.current - 1) &&
+      !isLoading &&
+      repoCount > per_page * (page - 1) &&
       scrollTop + clientHeight + 1 >= scrollHeight
     ) {
       fetch();
@@ -175,7 +160,7 @@ function App() {
 
     if (scrollTop > 100) setShowTopBtn(true);
     else setShowTopBtn(false);
-  };
+  }, [repoListRef, isLoading, page, repoCount]);
 
   useEffect(() => {
     const repoList = repoListRef.current;
@@ -183,7 +168,7 @@ function App() {
     return () => {
       if (repoList) repoList.removeEventListener('scroll', onListScroll);
     };
-  }, []);
+  }, [onListScroll]);
 
   return (
     <AppWrapper>
@@ -211,13 +196,7 @@ function App() {
 
         <Spinner isLoading={isLoading} />
 
-        <Zoom in={showTopBtn} unmountOnExit>
-          <FabWrapper>
-            <Fab size="small" color="secondary" onClick={onTopBottomClick}>
-              <NavigationIcon />
-            </Fab>
-          </FabWrapper>
-        </Zoom>
+        <TopButton show={showTopBtn} onClick={onTopBottomClick} />
       </RepoList>
     </AppWrapper>
   );
