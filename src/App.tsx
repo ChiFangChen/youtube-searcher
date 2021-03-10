@@ -5,6 +5,7 @@ import { Endpoints } from '@octokit/types';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import MaterialTextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import Zoom from '@material-ui/core/Zoom';
 import NavigationIcon from '@material-ui/icons/Navigation';
@@ -186,11 +187,15 @@ function App() {
 
   return (
     <AppWrapper>
+      <Typography align="center" variant="h3" component="h1">
+        {t('heading')}
+      </Typography>
+
       <LanguageSwitcher />
 
       <SearchBlock>
         <TextField
-          label={t('gitRepo')}
+          label={t('label')}
           value={search}
           onChange={handleSearchChange}
           className="input"
