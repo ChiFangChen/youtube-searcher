@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 'react';
+import React, { ChangeEvent, useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { debounce } from 'ts-debounce';
 import { useTranslation } from 'react-i18next';
-import Typography from '@material-ui/core/Typography';
+import { Typography, Snackbar, Fade } from '@material-ui/core';
 
 import useGetRepos from 'hooks/useGetRepos';
 import LanguageSwitcher from 'components/LanguageSwitcher';
@@ -61,6 +61,12 @@ function Main() {
 
   const [showTopBtn, setShowTopBtn] = useState(false);
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const isNotFinished = useMemo(() => repoCount > per_page * (page - 1), [repoCount, page]);
+
+  const closeSnackbar = () => setShowSnackbar(false);
+
   const repoListRef = useRef<HTMLDivElement>(null);
 
   const onTopBottomClick = (): void =>
@@ -76,17 +82,14 @@ function Main() {
     // clientHeight + scrollTop = scrollHeight
     const { clientHeight, scrollTop, scrollHeight } = repoListRef.current;
 
-    if (
-      !isLoading &&
-      repoCount > per_page * (page - 1) &&
-      scrollTop + clientHeight + 1 >= scrollHeight
-    ) {
-      fetch();
+    if (!isLoading && scrollTop + clientHeight >= scrollHeight) {
+      if (isNotFinished) fetch();
+      else setShowSnackbar(true);
     }
 
     if (scrollTop > 100) setShowTopBtn(true);
     else setShowTopBtn(false);
-  }, [repoListRef, isLoading, page, repoCount, fetch]);
+  }, [repoListRef, isLoading, isNotFinished, fetch]);
 
   useEffect(() => {
     const repoList = repoListRef.current;
@@ -121,6 +124,17 @@ function Main() {
         ))}
 
         <Spinner isLoading={isLoading} />
+
+        <Snackbar
+          open={showSnackbar}
+          onClose={closeSnackbar}
+          TransitionComponent={Fade}
+          autoHideDuration={1000}
+        >
+          <Typography variant="overline" display="block">
+            {t('noMoreData')}
+          </Typography>
+        </Snackbar>
 
         <TopButton show={showTopBtn} onClick={onTopBottomClick} />
       </RepoList>
