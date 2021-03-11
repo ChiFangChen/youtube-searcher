@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState, useCallback, useRef, useEffect } from 'react';
-import axios from 'axios';
 import { debounce } from 'ts-debounce';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 
+import useGetRepos from 'hooks/useGetRepos';
 import LanguageSwitcher from 'components/LanguageSwitcher';
 import Spinner from 'components/Spinner';
 import TopButton from 'components/TopButton';
@@ -14,27 +14,29 @@ import { AppWrapper, SearchBlock, TextField, RepoList, RepoListItem } from './st
 const per_page = 100;
 
 function Main() {
+  /* i18n */
+
   const { t } = useTranslation();
 
-  const [isLoading, setIsLoading] = useState(false);
+  /* main data */
 
   const [search, setSearch] = useState('');
-  const searchRef = useRef(search);
-  searchRef.current = search;
-
-  const [repos, setRepos] = useState<ReposResponse>([]);
-  const reposRef = useRef(repos);
-  reposRef.current = repos;
-
-  const [repoCount, setRepoCount] = useState(repos.length);
-
   const [page, setPage] = useState(1);
-  const pageRef = useRef(page);
-  pageRef.current = page;
 
-  const [showTopBtn, setShowTopBtn] = useState(false);
+  const {
+    isLoading,
+    isDone,
+    data: { items: repos, total_count: repoCount } = { items: [], total_count: 0 },
+    fetch,
+  } = useGetRepos<ReposResponse>({
+    search,
+    page,
+    per_page,
+  });
 
-  const repoListRef = useRef<HTMLDivElement>(null);
+  const debounceFetch = useCallback(debounce(fetch, 500), []);
+
+  const [accumulatedRepos, setAccumulatedRepos] = useState<ReposResponse['items']>([]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -43,30 +45,23 @@ function Main() {
     debounceFetch();
   };
 
-  const fetch: VoidFunction = () => {
-    setIsLoading(true);
-    const currentPage = pageRef.current;
-    const queryString = `q=${encodeURIComponent(
-      searchRef.current,
-    )}&page=${currentPage}&per_page=${per_page}`;
-    axios
-      .get(`https://api.github.com/search/repositories?${queryString}`)
-      .then(function (response) {
-        if (currentPage === 1) {
-          setRepos(response.data.items);
-          repoListRef.current?.scrollTo(0, 0);
-        } else {
-          setRepos([...reposRef.current, ...response.data.items]);
-        }
-        setPage(currentPage + 1);
-        setRepoCount(response.data.total_count);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+  useEffect(() => {
+    if (isDone) {
+      if (page === 1) {
+        setAccumulatedRepos(repos);
+        repoListRef.current?.scrollTo(0, 0);
+      } else {
+        setAccumulatedRepos((r) => [...r, ...repos]);
+      }
+      setPage(page + 1);
+    }
+  }, [isDone]);
 
-  const debounceFetch = useCallback(debounce(fetch, 500), []);
+  /* scroll */
+
+  const [showTopBtn, setShowTopBtn] = useState(false);
+
+  const repoListRef = useRef<HTMLDivElement>(null);
 
   const onTopBottomClick = (): void =>
     repoListRef.current?.scrollTo({
@@ -91,7 +86,7 @@ function Main() {
 
     if (scrollTop > 100) setShowTopBtn(true);
     else setShowTopBtn(false);
-  }, [repoListRef, isLoading, page, repoCount]);
+  }, [repoListRef, isLoading, page, repoCount, fetch]);
 
   useEffect(() => {
     const repoList = repoListRef.current;
@@ -119,7 +114,7 @@ function Main() {
       </SearchBlock>
 
       <RepoList ref={repoListRef}>
-        {repos.map((repo, i) => (
+        {accumulatedRepos.map((repo, i) => (
           <RepoListItem key={`${repo.id}${i}`} href={repo.svn_url} target="_blank" rel="noreferrer">
             {repo.full_name}
           </RepoListItem>
