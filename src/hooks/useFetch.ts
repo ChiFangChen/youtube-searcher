@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import axios, { AxiosResponse } from 'axios';
 
+import { API_HOST } from 'utils/variables';
+
 type UseFetchParameter = {
   path: string;
 };
@@ -31,7 +33,7 @@ const useFetch = <D>({ path }: UseFetchParameter): UseFetchRes<D> => {
     setIsLoading(true);
 
     axios
-      .get(pathRef.current)
+      .get(`${API_HOST}${pathRef.current}`)
       .then(function (response: AxiosResponse<D>) {
         setData(response.data);
         setStatusCode(response.status);

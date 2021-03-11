@@ -32,7 +32,7 @@ const useGetRepos = ({ search, page, per_page }: UseGetReposParameter) => {
     reset: orinReset,
     ...result
   } = useFetch<ReposResponse>({
-    path: `https://api.github.com/search/repositories${query}`,
+    path: `/search/repositories${query}`,
   });
 
   useEffect(() => {
