@@ -3,6 +3,7 @@ import { debounce } from 'ts-debounce';
 import { useTranslation } from 'react-i18next';
 import { Typography, Snackbar, Fade } from '@material-ui/core';
 
+import { per_page } from 'utils/variables';
 import useGetRepos from 'hooks/useGetRepos';
 import LanguageSwitcher from 'components/LanguageSwitcher';
 import Spinner from 'components/Spinner';
@@ -10,8 +11,6 @@ import TopButton from 'components/TopButton';
 
 import { ReposResponse } from './types';
 import { AppWrapper, SearchBlock, TextField, RepoList, RepoListItem } from './styles';
-
-const per_page = 100;
 
 function Main() {
   /* i18n */

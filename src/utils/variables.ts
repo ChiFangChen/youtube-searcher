@@ -1,3 +1,6 @@
+// settings
+export const per_page = 100;
+
 // breakpoint
 export const TABLET_MIN = '1024px';
 export const PAD_MAX = '1023px';
