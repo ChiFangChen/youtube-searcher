@@ -9,7 +9,6 @@ import LanguageSwitcher from 'components/LanguageSwitcher';
 import Spinner from 'components/Spinner';
 import TopButton from 'components/TopButton';
 
-import { ReposResponse } from './types';
 import { AppWrapper, SearchBlock, TextField, RepoList, RepoListItem } from './styles';
 
 function Main() {
@@ -25,17 +24,15 @@ function Main() {
   const {
     isLoading,
     isDone,
-    data: { items: repos, total_count: repoCount } = { items: [], total_count: 0 },
+    data: { items: repos, total_count: repoCount },
     fetch,
-  } = useGetRepos<ReposResponse>({
+  } = useGetRepos({
     search,
     page,
     per_page,
   });
 
   const debounceFetch = useCallback(debounce(fetch, 500), []);
-
-  const [accumulatedRepos, setAccumulatedRepos] = useState<ReposResponse['items']>([]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -47,12 +44,9 @@ function Main() {
   useEffect(() => {
     if (isDone) {
       if (page === 1) {
-        setAccumulatedRepos(repos);
         repoListRef.current?.scrollTo(0, 0);
-      } else {
-        setAccumulatedRepos((r) => [...r, ...repos]);
       }
-      setPage(page + 1);
+      setPage((p) => p + 1);
     }
   }, [isDone]);
 
@@ -116,7 +110,7 @@ function Main() {
       </SearchBlock>
 
       <RepoList ref={repoListRef}>
-        {accumulatedRepos.map((repo, i) => (
+        {repos.map((repo, i) => (
           <RepoListItem key={`${repo.id}${i}`} href={repo.svn_url} target="_blank" rel="noreferrer">
             {repo.full_name}
           </RepoListItem>
