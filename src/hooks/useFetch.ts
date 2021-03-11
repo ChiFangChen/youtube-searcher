@@ -26,10 +26,8 @@ const useFetch = <D>({ path }: UseFetchParameter): UseFetchRes<D> => {
   const pathRef = useRef(path);
   pathRef.current = path;
 
-  const fetch = () => {
-    setIsDone(false);
-    setStatusCode(undefined);
-    setIsErr(false);
+  const fetch = ({ initData } = { initData: false }) => {
+    reset({ initData });
     setIsLoading(true);
 
     axios
@@ -50,12 +48,12 @@ const useFetch = <D>({ path }: UseFetchParameter): UseFetchRes<D> => {
       });
   };
 
-  const reset = () => {
+  const reset = ({ initData } = { initData: true }) => {
     setIsLoading(false);
     setIsDone(false);
     setIsErr(false);
     setStatusCode(undefined);
-    setData(undefined);
+    if (initData) setData(undefined);
   };
 
   return {
