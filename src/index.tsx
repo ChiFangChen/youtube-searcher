@@ -1,20 +1,15 @@
-import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
-import 'fontsource-roboto';
-import 'normalize.css';
+import React from 'react';
+import { hydrate, render } from 'react-dom';
 
-import './i18n.ts';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Spinner from 'components/Spinner';
 
-ReactDOM.render(
-  <Suspense fallback={<Spinner wrapperHeight="100vh" />}>
-    <App />
-  </Suspense>,
-  document.getElementById('root'),
-);
+const rootElement = document.getElementById('root') as HTMLElement;
+if (rootElement.hasChildNodes()) {
+  hydrate(<App />, rootElement);
+} else {
+  render(<App />, rootElement);
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
