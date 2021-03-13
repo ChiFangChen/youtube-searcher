@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/github-repos-searcher/static/css/main.599e6dc6.chunk.css",
+    "main.js": "/github-repos-searcher/static/js/main.5ff89648.chunk.js",
+    "main.js.map": "/github-repos-searcher/static/js/main.5ff89648.chunk.js.map",
+    "runtime-main.js": "/github-repos-searcher/static/js/runtime-main.80ec49e4.js",
+    "runtime-main.js.map": "/github-repos-searcher/static/js/runtime-main.80ec49e4.js.map",
+    "static/css/2.6d03b60d.chunk.css": "/github-repos-searcher/static/css/2.6d03b60d.chunk.css",
+    "static/js/2.141aeb9c.chunk.js": "/github-repos-searcher/static/js/2.141aeb9c.chunk.js",
+    "static/js/2.141aeb9c.chunk.js.map": "/github-repos-searcher/static/js/2.141aeb9c.chunk.js.map",
+    "static/js/3.a2f1d25b.chunk.js": "/github-repos-searcher/static/js/3.a2f1d25b.chunk.js",
+    "static/js/3.a2f1d25b.chunk.js.map": "/github-repos-searcher/static/js/3.a2f1d25b.chunk.js.map",
+    "index.html": "/github-repos-searcher/index.html",
+    "static/css/2.6d03b60d.chunk.css.map": "/github-repos-searcher/static/css/2.6d03b60d.chunk.css.map",
+    "static/css/main.599e6dc6.chunk.css.map": "/github-repos-searcher/static/css/main.599e6dc6.chunk.css.map",
+    "static/js/2.141aeb9c.chunk.js.LICENSE.txt": "/github-repos-searcher/static/js/2.141aeb9c.chunk.js.LICENSE.txt",
+    "static/media/getFetch.cjs": "/github-repos-searcher/static/media/getFetch.d7d6010d.cjs",
+    "static/media/index.css": "/github-repos-searcher/static/media/roboto-vietnamese-400-normal.52cebac0.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.80ec49e4.js",
+    "static/css/2.6d03b60d.chunk.css",
+    "static/js/2.141aeb9c.chunk.js",
+    "static/css/main.599e6dc6.chunk.css",
+    "static/js/main.5ff89648.chunk.js"
+  ]
+}
