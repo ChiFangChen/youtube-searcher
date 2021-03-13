@@ -11,7 +11,7 @@ i18n
   .init({
     backend: {
       //網頁載入時去下載語言檔的位置
-      loadPath: '/locales/{{lng}}/{{ns}}.json',
+      loadPath: './locales/{{lng}}/{{ns}}.json',
     },
     // 當目前的語言檔找不到對應的字詞時，會用 fallbackLng (en) 作為預設語言
     fallbackLng: 'en',
