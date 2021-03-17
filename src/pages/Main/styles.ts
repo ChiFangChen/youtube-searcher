@@ -37,12 +37,12 @@ export const TextField = styled(MaterialTextField)`
   }
 `;
 
-export const RepoList = styled.div`
+export const List = styled.div`
   flex: 1;
   overflow: scroll;
 `;
 
-export const RepoListItem = styled.a`
+export const ListItem = styled.a`
   ${FlexCenter}
   height: 40px;
   width: 100%;

@@ -1,6 +1,6 @@
-# GitHub repositories searcher
+# Youtube searcher
 
-Check the [Demo](https://chifangchen.github.io/github-repos-searcher/)
+Check the [Demo](https://chifangchen.github.io/youtube-searcher/)
 
 ---
 
