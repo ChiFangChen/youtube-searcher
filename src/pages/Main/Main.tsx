@@ -1,14 +1,16 @@
-import React, { ChangeEvent, useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { ChangeEvent, useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { debounce } from 'ts-debounce';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { per_page } from 'utils/variables';
-import useGetVideos from 'hooks/useGetVideos';
+import { videosSelector, readVideos, reset } from 'modules/videos';
 import LanguageSwitcher from 'components/LanguageSwitcher';
 import Spinner from 'components/Spinner';
 
 import { AppWrapper, SearchBlock, TextField, List, ListItem } from './styles';
+
+const uiPerPage = 24;
 
 function Main() {
   /* i18n */
@@ -19,29 +21,51 @@ function Main() {
 
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const searchRef = useRef(search);
+  searchRef.current = search;
 
-  const { isLoading, isDone, data, fetch } = useGetVideos({
-    search,
-    page,
-    pageToken: undefined,
-  });
+  const { isLoading, data } = useSelector(videosSelector);
+  const dispatch = useDispatch();
 
-  console.log(data);
+  const paginationCount = useMemo(() => Math.ceil(data.items.length / uiPerPage), [
+    data.items.length,
+  ]);
 
-  const debounceFetch = useCallback(debounce(fetch, 500), []);
+  const handleReset = useCallback(() => dispatch(reset()), [dispatch]);
+
+  const handleFetch = useCallback(() => {
+    dispatch(
+      readVideos({
+        search: searchRef.current,
+      }),
+    );
+  }, [dispatch, searchRef]);
+
+  const resetAndFetch = useCallback(() => {
+    // init page
+    handleReset();
+    setPage(1);
+
+    handleFetch();
+  }, [setPage, handleReset, handleFetch]);
+
+  const debounceFetch = useCallback(debounce(resetAndFetch, 500), []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    // init page
-    setPage(1);
     debounceFetch();
   };
 
+  const goYoutube = (id: string) => () => {
+    window.open(`https://www.youtube.com/watch?v=${id}`);
+  };
+
+  const onPaginationChange = (event: object, page: number) => setPage(page);
+
+  // when clicking the last page button, load more data
   useEffect(() => {
-    if (isDone) {
-      setPage((p) => p + 1);
-    }
-  }, [isDone]);
+    if (page === paginationCount && data.pageInfo.resultsPerPage) handleFetch();
+  }, [page, paginationCount, data.pageInfo.resultsPerPage, handleFetch]);
 
   return (
     <AppWrapper>
