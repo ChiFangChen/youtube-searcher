@@ -1,14 +1,21 @@
 import React, { ChangeEvent, useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { debounce } from 'ts-debounce';
 import { useTranslation } from 'react-i18next';
-import { Typography } from '@material-ui/core';
+import { Typography, CardActionArea, CardContent, CardMedia, Grid } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { videosSelector, readVideos, reset } from 'modules/videos';
 import LanguageSwitcher from 'components/LanguageSwitcher';
-import Spinner from 'components/Spinner';
 
-import { AppWrapper, SearchBlock, TextField, List, ListItem } from './styles';
+import {
+  AppWrapper,
+  SearchBlock,
+  TextField,
+  List,
+  ListItem,
+  StyledSpinner,
+  Pagination,
+} from './styles';
 
 const uiPerPage = 24;
 
@@ -85,14 +92,36 @@ function Main() {
       </SearchBlock>
 
       <List>
-        {/* {repos.map((repo, i) => (
-          <ListItem key={`${repo.id}${i}`} href={repo.svn_url} target="_blank" rel="noreferrer">
-            {repo.full_name}
-          </ListItem>
-        ))} */}
+        <Grid container spacing={3}>
+          {data.items
+            .slice((page - 1) * uiPerPage, page * uiPerPage)
+            .map((item: any, i: number) => (
+              <Grid item xs={12} sm={6} md={4} xl={3} key={`${item.id}${i}`}>
+                <ListItem>
+                  <CardActionArea className="action-area" onClick={goYoutube(item.id)}>
+                    <CardMedia image={item.img} title={item.title} className="image" />
+                    <CardContent>
+                      <Typography component="h5" align="center">
+                        {item.title}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </ListItem>
+              </Grid>
+            ))}
+        </Grid>
 
-        <Spinner isLoading={isLoading} />
+        <StyledSpinner isLoading={isLoading && !data.nextPageToken} />
       </List>
+
+      {paginationCount && (
+        <Pagination
+          page={page}
+          onChange={onPaginationChange}
+          count={paginationCount}
+          color="secondary"
+        />
+      )}
     </AppWrapper>
   );
 }

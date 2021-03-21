@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import MaterialTextField from '@material-ui/core/TextField';
+import { TextField as MaterialTextField, Card } from '@material-ui/core';
+import MaterialPagination from '@material-ui/lab/Pagination';
 
-import { MOBILE_MAX } from 'utils/variables';
-import { FlexCenter } from 'utils/styles';
+import { SM_MIN, MD_MIN, LG_MIN } from 'utils/variables';
+import Spinner from 'components/Spinner';
 
 export const AppWrapper = styled.div`
   height: 100vh;
@@ -38,19 +39,19 @@ export const TextField = styled(MaterialTextField)`
 `;
 
 export const List = styled.div`
+  margin-top: 25px;
   flex: 1;
   overflow: scroll;
 `;
 
-export const ListItem = styled.a`
-  ${FlexCenter}
-  height: 40px;
-  width: 100%;
+export const ListItem = styled(Card)`
   color: #000;
   background-color: whitesmoke;
   text-decoration: none;
-  border: 1px solid #fff;
-  padding: 25px;
+
+  .action-area {
+    padding: 25px;
+  }
 
   &:visited {
     color: #999;
@@ -65,7 +66,29 @@ export const ListItem = styled.a`
     }
   }
 
-  @media (max-width: ${MOBILE_MAX}) {
-    justify-content: left;
+  .image {
+    height: 300px;
+
+    @media (min-width: ${SM_MIN}) {
+      height: 200px;
+    }
+
+    @media (min-width: ${MD_MIN}) {
+      height: 180px;
+    }
+
+    @media (min-width: ${LG_MIN}) {
+      height: 300px;
+    }
   }
+`;
+
+export const StyledSpinner = styled(Spinner)`
+  margin-top: 12px;
+`;
+
+export const Pagination = styled(MaterialPagination)`
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
 `;
