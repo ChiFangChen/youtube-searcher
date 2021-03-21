@@ -1,16 +1,21 @@
 {
   "short_name": "Kiki Searcher",
-  "name": "Kiki GitHub Repositories Searcher",
+  "name": "Kiki Youtube Searcher",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "64x64",
       "type": "image/x-icon"
     },
     {
-      "src": "logo284.png",
+      "src": "logo512.png",
       "type": "image/png",
-      "sizes": "284x284"
+      "sizes": "512x512"
+    },
+    {
+      "src": "logo120.png",
+      "type": "image/png",
+      "sizes": "120x120"
     }
   ],
   "start_url": ".",

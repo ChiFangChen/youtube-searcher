@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/github-repos-searcher/static/css/main.599e6dc6.chunk.css",
-    "main.js": "/github-repos-searcher/static/js/main.bbefea4c.chunk.js",
-    "main.js.map": "/github-repos-searcher/static/js/main.bbefea4c.chunk.js.map",
-    "runtime-main.js": "/github-repos-searcher/static/js/runtime-main.80ec49e4.js",
-    "runtime-main.js.map": "/github-repos-searcher/static/js/runtime-main.80ec49e4.js.map",
-    "static/css/2.6d03b60d.chunk.css": "/github-repos-searcher/static/css/2.6d03b60d.chunk.css",
-    "static/js/2.141aeb9c.chunk.js": "/github-repos-searcher/static/js/2.141aeb9c.chunk.js",
-    "static/js/2.141aeb9c.chunk.js.map": "/github-repos-searcher/static/js/2.141aeb9c.chunk.js.map",
-    "static/js/3.a2f1d25b.chunk.js": "/github-repos-searcher/static/js/3.a2f1d25b.chunk.js",
-    "static/js/3.a2f1d25b.chunk.js.map": "/github-repos-searcher/static/js/3.a2f1d25b.chunk.js.map",
-    "index.html": "/github-repos-searcher/index.html",
-    "static/css/2.6d03b60d.chunk.css.map": "/github-repos-searcher/static/css/2.6d03b60d.chunk.css.map",
-    "static/css/main.599e6dc6.chunk.css.map": "/github-repos-searcher/static/css/main.599e6dc6.chunk.css.map",
-    "static/js/2.141aeb9c.chunk.js.LICENSE.txt": "/github-repos-searcher/static/js/2.141aeb9c.chunk.js.LICENSE.txt",
-    "static/media/getFetch.cjs": "/github-repos-searcher/static/media/getFetch.d7d6010d.cjs",
-    "static/media/index.css": "/github-repos-searcher/static/media/roboto-vietnamese-400-normal.52cebac0.woff2"
+    "main.css": "/youtube-searcher/static/css/main.599e6dc6.chunk.css",
+    "main.js": "/youtube-searcher/static/js/main.7c53c2ce.chunk.js",
+    "main.js.map": "/youtube-searcher/static/js/main.7c53c2ce.chunk.js.map",
+    "runtime-main.js": "/youtube-searcher/static/js/runtime-main.efbb20fb.js",
+    "runtime-main.js.map": "/youtube-searcher/static/js/runtime-main.efbb20fb.js.map",
+    "static/css/2.542bc310.chunk.css": "/youtube-searcher/static/css/2.542bc310.chunk.css",
+    "static/js/2.3fde1388.chunk.js": "/youtube-searcher/static/js/2.3fde1388.chunk.js",
+    "static/js/2.3fde1388.chunk.js.map": "/youtube-searcher/static/js/2.3fde1388.chunk.js.map",
+    "static/js/3.55f518a1.chunk.js": "/youtube-searcher/static/js/3.55f518a1.chunk.js",
+    "static/js/3.55f518a1.chunk.js.map": "/youtube-searcher/static/js/3.55f518a1.chunk.js.map",
+    "index.html": "/youtube-searcher/index.html",
+    "static/css/2.542bc310.chunk.css.map": "/youtube-searcher/static/css/2.542bc310.chunk.css.map",
+    "static/css/main.599e6dc6.chunk.css.map": "/youtube-searcher/static/css/main.599e6dc6.chunk.css.map",
+    "static/js/2.3fde1388.chunk.js.LICENSE.txt": "/youtube-searcher/static/js/2.3fde1388.chunk.js.LICENSE.txt",
+    "static/media/getFetch.cjs": "/youtube-searcher/static/media/getFetch.d7d6010d.cjs",
+    "static/media/index.css": "/youtube-searcher/static/media/roboto-vietnamese-400-normal.52cebac0.woff2"
   },
   "entrypoints": [
-    "static/js/runtime-main.80ec49e4.js",
-    "static/css/2.6d03b60d.chunk.css",
-    "static/js/2.141aeb9c.chunk.js",
+    "static/js/runtime-main.efbb20fb.js",
+    "static/css/2.542bc310.chunk.css",
+    "static/js/2.3fde1388.chunk.js",
     "static/css/main.599e6dc6.chunk.css",
-    "static/js/main.bbefea4c.chunk.js"
+    "static/js/main.7c53c2ce.chunk.js"
   ]
 }
