@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
-    "@octokit/types": "^6.12.1",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -23,7 +23,10 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-i18next": "^11.8.9",
+    "react-redux": "^7.2.2",
     "react-scripts": "4.0.3",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1",
     "ts-debounce": "^3.0.0",
     "typescript": "^4.1.2",
@@ -66,6 +69,7 @@
   },
   "devDependencies": {
     "@types/qs": "^6.9.6",
+    "@types/react-redux": "^7.1.16",
     "@types/styled-components": "^5.1.7",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
