@@ -7,7 +7,7 @@ import 'fontsource-roboto';
 import 'normalize.css';
 
 import { rootReducer } from 'modules';
-import fetchMiddleWare from 'middleware/fetchMiddleware';
+import fetchMiddleWare from 'middlewares/fetchMiddleware';
 import Spinner from 'components/Spinner';
 import Main from 'pages/Main';
 import 'i18n.ts';
